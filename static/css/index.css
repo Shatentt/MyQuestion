@@ -1,0 +1,23 @@
+.new_hot_questions{
+    display: flex;
+    gap: 5%;
+    align-items: last baseline;
+}
+
+.other_questions{
+    font-size: 20px;
+    transition: box-shadow 0.25s ease-in-out, background-color 0.25s ease-in-out;
+    border-radius: 5px;
+}
+
+.other_questions:hover{
+    box-shadow: 0 0 0 5px #303030;
+    background-color: #303030;
+}
+
+.questions{
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+    gap: 30px;
+}

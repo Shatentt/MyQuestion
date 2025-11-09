@@ -1,0 +1,86 @@
+{% extends "layout/base.html" %}
+{% load static %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static '/css/index.css' %}">
+<link rel="stylesheet" href="{% static '/css/layout/questions-answers.css' %}">
+<title>Hot Question</title>
+{% endblock %}
+
+{% block title %}
+<div class="new_hot_questions">
+    <div class="cur_title">
+        Hot Questions
+    </div>
+    <div class="other_questions">
+        <a href="{% url 'index' %}" class="other_questions">New Questions</a>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="questions">
+    <div class="question-answer">
+        <div class="question-answer__avatar_likes">
+            <img class="user_avatar" src="{% static 'images/silly cat.jpg' %}" alt="img">
+            <div class="question-answer__likes">
+                <div class="like_count">5</div>
+                <div class="rate">
+                    <button class="rate_btn">+</button>
+                    <button class="rate_btn">-</button>
+                </div>
+            </div>
+        </div>
+        <div class="question-answer__content">
+            <div class="question-answer__theme_text">
+                <a href="{% url 'question' %}" class="question-answer__theme">To be or not to be?</a>
+                <p class="question-answer__text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur dui sapien, hendrerit at dui eget, accumsan condimentum sem. Mauris euismod eget lorem in sollicitudin. In ante justo, vestibulum eu nisi vitae, rhoncus condimentum diam. Sed id elit a ante malesuada sodales. Proin imperdiet, urna vel suscipit placerat, diam tellus posuere est, ut vulputate justo dui quis neque. Cras nec libero consectetur, congue augue placerat, porttitor eros. Etiam nulla leo, pretium in ante et, consequat facilisis ex. Fusce dictum hendrerit leo eu aliquam. Proin fringilla tortor turpis, at tincidunt urna vestibulum vitae. </p>
+            </div>
+            <div class="question__links">
+                <div class="question__answers">
+                    <a href="#" class="white-gray_link">Answers(3)</a>
+                </div>
+                <div class="question__tags">
+                    <div class="question__tags_title">Tags:</div>
+                    <div>
+                        <a href="#" class="white-gray_link">tag1</a>
+                        <a href="#" class="white-gray_link">tag2</a>
+                        <a href="#" class="white-gray_link">tag3</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="question-answer">
+        <div class="question-answer__avatar_likes">
+            <img class="user_avatar" src="{% static 'images/silly cat.jpg' %}" alt="img">
+            <div class="question-answer__likes">
+                <div class="like_count">5</div>
+                <div class="rate">
+                    <button class="rate_btn">+</button>
+                    <button class="rate_btn">-</button>
+                </div>
+            </div>
+        </div>
+        <div class="question-answer__content">
+            <div class="question-answer__theme_text">
+                <a href="{% url 'question' %}" class="question-answer__theme">To be or not to be?</a>
+                <p class="question-answer__text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur dui sapien, hendrerit at dui eget, accumsan condimentum sem. Mauris euismod eget lorem in sollicitudin. In ante justo, vestibulum eu nisi vitae, rhoncus condimentum diam. Sed id elit a ante malesuada sodales. Proin imperdiet, urna vel suscipit placerat, diam tellus posuere est, ut vulputate justo dui quis neque. Cras nec libero consectetur, congue augue placerat, porttitor eros. Etiam nulla leo, pretium in ante et, consequat facilisis ex. Fusce dictum hendrerit leo eu aliquam. Proin fringilla tortor turpis, at tincidunt urna vestibulum vitae. </p>
+            </div>
+            <div class="question__links">
+                <div class="question__answers">
+                    <a href="#" class="white-gray_link">Answers(3)</a>
+                </div>
+                <div class="question__tags">
+                    <div class="question__tags_title">Tags:</div>
+                    <div>
+                        <a href="#" class="white-gray_link">tag1</a>
+                        <a href="#" class="white-gray_link">tag2</a>
+                        <a href="#" class="white-gray_link">tag3</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

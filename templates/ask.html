@@ -1,0 +1,51 @@
+{% extends "layout/base.html" %}
+{% load static %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static '/css/ask.css' %}">
+<title>Ask Question</title>
+{% endblock %}
+
+{% block title %}
+<div class="cur_title">
+    New Question
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="data">
+    <form action="" class="question_form">
+        <div class="form">
+            <div class="fields">
+                <div class="field_block">
+                    <div class="field_name">
+                        Title
+                    </div>
+                    <div class="block_input">
+                        <input type="text" class="title_input field_input">
+                    </div>
+                </div>
+                <div class="field_block field_text_block">
+                    <div class="field_name">
+                        Text
+                    </div>
+                    <div class="block_input">
+                        <textarea type="text" class="text_input field_input"></textarea>
+                    </div>
+                </div>
+                <div class="field_block">
+                    <div class="field_name">
+                        Tags
+                    </div>
+                    <div class="block_input">
+                        <input type="text" class="tags_input field_input">
+                    </div>
+                </div>
+            </div>
+            <div class="submit">
+                <input type="submit" value="Ask!" class="submit_ask">
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

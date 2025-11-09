@@ -1,0 +1,74 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/layout/base.css' %}">
+    {% block extra_head %} {% endblock %}
+</head>
+<body>
+    <nav class="navbar">
+        <a href="{% url 'index' %}" class="logo">MyQuestion</a>
+        <div class="search">
+            <input id="search_question" type="search" class="search__area">
+            <div class="search-ask">
+                <button class="search__btn">Search!</button>
+                <a class="ask__btn" href="{% url 'ask' %}">Ask!</a>
+            </div>
+        </div>
+        <div class="profile">
+            <div class="profile__pic">
+                <img class="user_avatar" src="{% static 'images/silly cat.jpg' %}" alt="img">
+            </div>
+            <div class="profile__content">
+                <div class="content__name">
+                    Silly Cat
+                </div>
+                <div class="content__links">
+                    <a href="#" class="gray_link">Settings</a>
+                    <a href="#" class="gray_link">Logout</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div class="main_block">
+        {% block title %}
+        {% endblock %}
+        <div class="main_content">
+            {% block content %}
+            {% endblock %}
+            <div class="tags_members">
+                <div class="tags">
+                    <div class="tags_title">
+                        Popular Tags
+                    </div>
+                    <div class="popular_tags">
+                        <a href="#" class="popular_tag gray_link">tag1</a>
+                        <a href="#" class="popular_tag gray_link">tag2</a>
+                        <a href="#" class="popular_tag gray_link">tag3</a>
+                        <a href="#" class="popular_tag gray_link">tag4</a>
+                        <a href="#" class="popular_tag gray_link">tag5</a>
+                        <a href="#" class="popular_tag gray_link">tag6</a>
+                        <a href="#" class="popular_tag gray_link">tag7</a>
+                        <a href="#" class="popular_tag gray_link">tag8</a>
+                    </div>
+                </div>
+                <div class="members">
+                    <div class="members_title">
+                        Best Members
+                    </div>
+                    <div class="best_members">
+                        <a href="#" class="best_member gray_link">Member1</a>
+                        <a href="#" class="best_member gray_link">Member2</a>
+                        <a href="#" class="best_member gray_link">Member4</a>
+                        <a href="#" class="best_member gray_link">Member5</a>
+                        <a href="#" class="best_member gray_link">Member3</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
