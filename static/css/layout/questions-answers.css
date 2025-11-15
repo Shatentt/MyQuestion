@@ -88,6 +88,10 @@
     transition: border-color .18s ease;
 }
 
+.question-answer:hover{
+    border-color: #1f6feb;
+}
+
 .white-gray_link{
     border: 2px solid transparent;
     background-clip: padding-box;
@@ -98,4 +102,11 @@
 .white-gray_link:hover{
     border-color: #3d444d;
     background-color: #3d444d;
+}
+
+.questions{
+    display: flex;
+    flex-direction: column;
+    width: 78%;
+    gap: 30px;
 }

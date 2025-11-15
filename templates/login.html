@@ -3,12 +3,13 @@
 
 {% block extra_head %}
 <link rel="stylesheet" href="{% static '/css/forms.css' %}">
-<title>Ask Question</title>
+<link rel="stylesheet" href="{% static '/css/authorization.css' %}">
+<title>Login</title>
 {% endblock %}
 
 {% block title %}
 <div class="cur_title">
-    New Question
+    Login
 </div>
 {% endblock %}
 
@@ -19,32 +20,30 @@
             <div class="fields">
                 <div class="field_block">
                     <div class="field_name">
-                        Title
+                        Login
                     </div>
                     <div class="block_input">
                         <input type="text" class="single-line_input field_input">
-                    </div>
-                </div>
-                <div class="field_block field_text_block">
-                    <div class="field_name">
-                        Text
-                    </div>
-                    <div class="block_input">
-                        <textarea type="text" class="multi-line_input field_input"></textarea>
                     </div>
                 </div>
                 <div class="field_block">
                     <div class="field_name">
-                        Tags
+                        Password
                     </div>
                     <div class="block_input">
-                        <input type="text" class="single-line_input field_input">
+                        <input type="password" class="single-line_input field_input">
                     </div>
                 </div>
+                {% csrf_token %}
             </div>
-            <div class="submit">
-                <input type="submit" value="Ask!" class="submit_btn">
+            <div class="form-btns">
+                <div class="submit">
+                    <input type="submit" value="Login!" class="submit_btn submit-login">
+                </div>
             </div>
+        </div>
+        <div class="other-auth">
+            <a href="{% url 'register' %}" class="a_btn other-auth-btn login-btn">Create new account</a>
         </div>
     </form>
 </div>

@@ -2,20 +2,14 @@
 {% load static %}
 
 {% block extra_head %}
-<link rel="stylesheet" href="{% static '/css/index.css' %}">
 <link rel="stylesheet" href="{% static '/css/layout/questions-answers.css' %}">
 <link rel="stylesheet" href="{% static '/css/layout/paginator.css' %}">
-<title>My Question</title>
+<title>tag1</title>
 {% endblock %}
 
 {% block title %}
-<div class="new_hot_questions">
-    <div class="cur_title">
-        New Questions
-    </div>
-    <div class="other_questions">
-        <a href="{% url 'hot_questions' %}" class="other_questions">Hot Questions</a>
-    </div>
+<div class="cur_title">
+    Tag: tag1
 </div>
 {% endblock %}
 

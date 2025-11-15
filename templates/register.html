@@ -1,0 +1,88 @@
+{% extends "layout/base.html" %}
+{% load static %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static '/css/forms.css' %}">
+<link rel="stylesheet" href="{% static '/css/authorization.css' %}">
+<title>Registration</title>
+<script src="{% static 'js/upload_photo.js' %}" defer></script>
+{% endblock %}
+
+{% block title %}
+<div class="cur_title">
+    Registration
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="data">
+    <form action="" class="question_form">
+        <div class="form">
+            <div class="fields">
+                <div class="field_block">
+                    <div class="field_name">
+                        Login
+                    </div>
+                    <div class="block_input">
+                        <input type="text" class="single-line_input field_input">
+                    </div>
+                </div>
+                <div class="field_block">
+                    <div class="field_name">
+                        Email
+                    </div>
+                    <div class="block_input">
+                        <input type="email" class="single-line_input field_input">
+                    </div>
+                </div>
+                <div class="field_block">
+                    <div class="field_name">
+                        NickName
+                    </div>
+                    <div class="block_input">
+                        <input type="text" class="single-line_input field_input">
+                    </div>
+                </div>
+                <div class="field_block">
+                    <div class="field_name">
+                        Password
+                    </div>
+                    <div class="block_input">
+                        <input type="password" class="single-line_input field_input">
+                    </div>
+                </div>
+                <div class="field_block">
+                    <div class="field_name">
+                        Repeat password
+                    </div>
+                    <div class="block_input">
+                        <input type="password" class="single-line_input field_input">
+                    </div>
+                </div>
+                <div class="field_block field_text_block">
+                    <div class="field_name">
+                        Upload Avatar
+                    </div>
+                    <div class="block_input avatar-upload">
+                        <div class="avatar-preview"></div>
+                        <div class="upload-controls">
+                            <input id="avatarInput" name="avatar" type="file" accept="image/*" style="display:none">
+                            <div class="button_upload">
+                                <button id="chooseBtn" class="btn_upload">Choose file</button>
+                            </div>
+                            <div id="uploadStatus" class="upload-status" aria-live="polite"></div>
+                        </div>
+                    </div>
+                </div>
+                {% csrf_token %}
+            </div>
+            <div class="submit">
+                <input type="submit" value="Register!" class="submit_btn">
+            </div>
+        </div>
+        <div class="other-auth">
+            <a href="{% url 'login' %}" class="a_btn other-auth-btn reg-btn">Already have account?</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

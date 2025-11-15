@@ -1,0 +1,34 @@
+{% load static %}
+
+
+<div class="question-answer">
+    <div class="question-answer__avatar_likes">
+        <img class="user_avatar" src="{% static 'images/silly cat.jpg' %}" alt="img">
+        <div class="question-answer__likes">
+            <div class="like_count">5</div>
+            <div class="rate">
+                <button class="rate_btn">+</button>
+                <button class="rate_btn">-</button>
+            </div>
+        </div>
+    </div>
+    <div class="question-answer__content">
+        <div class="question-answer__theme_text">
+            <a href="{% url 'question' q.id %}" class="question-answer__theme">{{ q.title }}</a>
+            <p class="question-answer__text">{{ q.text }}</p>
+        </div>
+        <div class="question__links">
+            <div class="question__answers">
+                <a href="{% url 'question' q.id %}" class="white-gray_link">Answers(3)</a>
+            </div>
+            <div class="question__tags">
+                <div class="question__tags_title">Tags:</div>
+                <div>
+                    <a href="#" class="white-gray_link">tag1</a>
+                    <a href="#" class="white-gray_link">tag2</a>
+                    <a href="#" class="white-gray_link">tag3</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

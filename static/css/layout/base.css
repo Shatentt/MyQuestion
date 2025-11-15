@@ -140,7 +140,7 @@ input[type="search"]::-webkit-search-results-decoration {
     gap: 5vw;
 }
 
-.ask__btn{
+.a_btn{
     background-color: #424242;
     display: flex;
     justify-content: center;
@@ -151,7 +151,7 @@ input[type="search"]::-webkit-search-results-decoration {
     transition: background-color 0.4s ease;
 }
 
-.search__btn:hover, .ask__btn:hover{
+.search__btn:hover, .a_btn:hover{
     background-color: #1f6feb;
 }
 
@@ -196,4 +196,12 @@ input[type="search"]::-webkit-search-results-decoration {
 
 .question__text{
     font-size: 18px;
+}
+
+.left-column{
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    gap: 30px;
 }

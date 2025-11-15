@@ -1,0 +1,33 @@
+.form-btns{
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+}
+
+.data{
+    gap: 20px;
+}
+
+.question_form{
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.other-auth-btn{
+    background-color: #353535;
+    margin-left: var(--label-width);
+    height: 40px;
+}
+
+.login-btn{
+    width: 150px;
+}
+
+.reg-btn{
+    width: 180px;
+}
+
+.submit-login{
+    width: 100px;
+}

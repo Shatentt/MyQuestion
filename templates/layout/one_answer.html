@@ -1,0 +1,26 @@
+{% load static %}
+
+
+<div class="question-answer">
+    <div class="question-answer__avatar_likes">
+        <img class="user_avatar" src="{% static 'images/silly cat.jpg' %}" alt="img">
+        <div class="question-answer__likes">
+            <div class="like_count">5</div>
+            <div class="rate">
+                <button class="rate_btn">+</button>
+                <button class="rate_btn">-</button>
+            </div>
+        </div>
+    </div>
+    <div class="question-answer__content">
+        <div class="question-answer__text">{{ ans.text }}</div>
+        <div class="correct_answer">
+            <div class="correct_form">
+                <input type="checkbox" id="answer1" class="is_correct">
+            </div>
+            <label for="answer1" class="correct_title">
+                Correct!
+            </label>
+        </div>
+    </div>
+</div>

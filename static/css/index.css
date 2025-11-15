@@ -15,9 +15,8 @@
     background-color: #303030;
 }
 
-.questions{
+.left_column{
     display: flex;
     flex-direction: column;
-    width: 60%;
-    gap: 30px;
+    gap: 20px;
 }

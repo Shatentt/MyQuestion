@@ -15,7 +15,7 @@
             <input id="search_question" type="search" class="search__area">
             <div class="search-ask">
                 <button class="search__btn">Search!</button>
-                <a class="ask__btn" href="{% url 'ask' %}">Ask!</a>
+                <a class="a_btn" href="{% url 'ask' %}">Ask!</a>
             </div>
         </div>
         <div class="profile">
@@ -27,7 +27,7 @@
                     Silly Cat
                 </div>
                 <div class="content__links">
-                    <a href="#" class="gray_link">Settings</a>
+                    <a href="{% url 'settings' %}" class="gray_link">Settings</a>
                     <a href="#" class="gray_link">Logout</a>
                 </div>
             </div>
@@ -37,15 +37,17 @@
         {% block title %}
         {% endblock %}
         <div class="main_content">
-            {% block content %}
-            {% endblock %}
+            <div class='left-column'>
+                {% block content %}
+                {% endblock %}
+            </div>
             <div class="tags_members">
                 <div class="tags">
                     <div class="tags_title">
                         Popular Tags
                     </div>
                     <div class="popular_tags">
-                        <a href="#" class="popular_tag gray_link">tag1</a>
+                        <a href="{% url 'tag' 1 %}" class="popular_tag gray_link">tag1</a>
                         <a href="#" class="popular_tag gray_link">tag2</a>
                         <a href="#" class="popular_tag gray_link">tag3</a>
                         <a href="#" class="popular_tag gray_link">tag4</a>
