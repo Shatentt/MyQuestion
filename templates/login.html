@@ -15,26 +15,34 @@
 
 {% block content %}
 <div class="data">
-    <form action="" class="question_form">
+    <form action="" class="question_form" method="POST">
+        {% if form.non_field_errors %}
+        <div class="error_msg">
+            {% for error in form.non_field_errors %}
+                {{ error }}
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ next }}">
         <div class="form">
             <div class="fields">
                 <div class="field_block">
-                    <div class="field_name">
-                        Login
-                    </div>
+                    <label class="field_name" for="username">
+                        {{ form.username.label }}
+                    </label>
                     <div class="block_input">
-                        <input type="text" class="single-line_input field_input">
+                        <input type="text" class="single-line_input field_input" id="username" name="username">
                     </div>
                 </div>
                 <div class="field_block">
-                    <div class="field_name">
-                        Password
-                    </div>
+                    <label class="field_name" for="password">
+                        {{ form.password.label }}
+                    </label>
                     <div class="block_input">
-                        <input type="password" class="single-line_input field_input">
+                        <input type="password" class="single-line_input field_input" id="password" name="password">
                     </div>
                 </div>
-                {% csrf_token %}
             </div>
             <div class="form-btns">
                 <div class="submit">
@@ -42,9 +50,9 @@
                 </div>
             </div>
         </div>
-        <div class="other-auth">
-            <a href="{% url 'register' %}" class="a_btn other-auth-btn login-btn">Create new account</a>
-        </div>
     </form>
+    <div class="other-auth">
+        <a href="{% url 'register' %}" class="a_btn other-auth-btn login-btn">Create new account</a>
+    </div>
 </div>
 {% endblock %}

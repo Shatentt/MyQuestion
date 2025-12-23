@@ -19,19 +19,30 @@
             </div>
         </div>
         <div class="profile">
+        {% if user.is_authenticated %}
+            {# Этот блок видит только залогиненный пользователь #}
             <div class="profile__pic">
-                <img class="user_avatar" src="{% static 'images/silly cat.jpg' %}" alt="img">
+                {# Используем наше новое свойство avatar_url из модели Profile #}
+                <img class="user_avatar" src="{{ user.profile.avatar_url }}" alt="avatar">
             </div>
             <div class="profile__content">
                 <div class="content__name">
-                    Silly Cat
+                    {{ user.username }}
                 </div>
                 <div class="content__links">
                     <a href="{% url 'settings' %}" class="gray_link">Settings</a>
-                    <a href="#" class="gray_link">Logout</a>
+                    <a href="{% url 'logout' %}?next={{ request.get_full_path }}" class="gray_link">Logout</a>
                 </div>
             </div>
-        </div>
+        {% else %}
+            {# Этот блок видит анонимный пользователь #}
+            <div class="auth_links">
+                <a href="{% url 'login' %}" class="gray_link">Log In</a>
+                <span style="color: #666;">|</span>
+                <a href="{% url 'register' %}" class="gray_link">Register</a>
+            </div>
+        {% endif %}
+</div>
     </nav>
     <div class="main_block">
         {% block title %}

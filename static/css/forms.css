@@ -1,9 +1,9 @@
 .question_form {
-  --label-width: clamp(120px, 20vw, 260px);
   width: 100%;
 }
 
 .data{
+    --label-width: clamp(120px, 20vw, 260px);
     display: flex;
     width: 60%;
 }
@@ -31,6 +31,12 @@
     border: 2px solid transparent;
     transition: border-color 0.5s ease, 
                 box-shadow 0.5s ease;
+}
+
+.error_msg{
+    color: #ff6b6b;
+    margin-bottom: 15px;
+    margin-left: var(--label-width);
 }
 
 .data{

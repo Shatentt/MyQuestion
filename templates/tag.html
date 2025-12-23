@@ -4,12 +4,12 @@
 {% block extra_head %}
 <link rel="stylesheet" href="{% static '/css/layout/questions-answers.css' %}">
 <link rel="stylesheet" href="{% static '/css/layout/paginator.css' %}">
-<title>tag1</title>
+<title>{{ tag.name }}</title>
 {% endblock %}
 
 {% block title %}
 <div class="cur_title">
-    Tag: tag1
+    Tag: {{ tag.name }}
 </div>
 {% endblock %}
 

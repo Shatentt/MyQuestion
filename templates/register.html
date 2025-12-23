@@ -16,7 +16,13 @@
 
 {% block content %}
 <div class="data">
-    <form action="" class="question_form">
+    <form action="" method="POST" class="question_form" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% if form.non_field_errors %}
+            <div style="color: red; margin-bottom: 10px;">
+                {{ form.non_field_errors }}
+            </div>
+        {% endif %}
         <div class="form">
             <div class="fields">
                 <div class="field_block">
@@ -24,7 +30,10 @@
                         Login
                     </div>
                     <div class="block_input">
-                        <input type="text" class="single-line_input field_input">
+                        <input type="text" class="single-line_input field_input" name="username" value="{{ form.username.value|default:'' }}">
+                        {% if form.username.errors %}
+                            <div class="input_error">{{ form.username.errors.0 }}</div>
+                        {% endif %}
                     </div>
                 </div>
                 <div class="field_block">
@@ -32,15 +41,21 @@
                         Email
                     </div>
                     <div class="block_input">
-                        <input type="email" class="single-line_input field_input">
+                        <input type="email" name="email" class="single-line_input field_input" value="{{ form.email.value|default:'' }}" required>
+                        {% if form.email.errors %}
+                            <div class="input_error">{{ form.email.errors.0 }}</div>
+                        {% endif %}
                     </div>
                 </div>
                 <div class="field_block">
                     <div class="field_name">
-                        NickName
+                        Display Name
                     </div>
                     <div class="block_input">
-                        <input type="text" class="single-line_input field_input">
+                        <input type="text" name="first_name" class="single-line_input field_input" value="{{ form.first_name.value|default:'' }}" required>
+                        {% if form.first_name.errors %}
+                            <div class="input_error">{{ form.first_name.errors.0 }}</div>
+                        {% endif %}
                     </div>
                 </div>
                 <div class="field_block">
@@ -48,7 +63,10 @@
                         Password
                     </div>
                     <div class="block_input">
-                        <input type="password" class="single-line_input field_input">
+                        <input type="password" name="password" class="single-line_input field_input">
+                        {% if form.password.errors %}
+                            <div class="input_error">{{ form.password.errors.0 }}</div>
+                        {% endif %}
                     </div>
                 </div>
                 <div class="field_block">
@@ -56,7 +74,10 @@
                         Repeat password
                     </div>
                     <div class="block_input">
-                        <input type="password" class="single-line_input field_input">
+                        <input type="password" name="repeat_password" class="single-line_input field_input">
+                        {% if form.repeat_password.errors %}
+                            <div class="input_error">{{ form.repeat_password.errors.0 }}</div>
+                        {% endif %}
                     </div>
                 </div>
                 <div class="field_block field_text_block">
@@ -68,20 +89,22 @@
                         <div class="upload-controls">
                             <input id="avatarInput" name="avatar" type="file" accept="image/*" style="display:none">
                             <div class="button_upload">
-                                <button id="chooseBtn" class="btn_upload">Choose file</button>
+                                <button type="button" id="chooseBtn" class="btn_upload">Choose file</button>
                             </div>
                             <div id="uploadStatus" class="upload-status" aria-live="polite"></div>
+                            {% if form.avatar.errors %}
+                                <div class="input_error">{{ form.avatar.errors.0 }}</div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
-                {% csrf_token %}
             </div>
             <div class="submit">
                 <input type="submit" value="Register!" class="submit_btn">
             </div>
         </div>
         <div class="other-auth">
-            <a href="{% url 'login' %}" class="a_btn other-auth-btn reg-btn">Already have account?</a>
+            <a href="{% url 'login' %}" class="a_btn other-auth-btn reg-btn">Already have an account?</a>
         </div>
     </form>
 </div>

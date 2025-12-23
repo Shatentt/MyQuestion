@@ -9,47 +9,58 @@
 
 {% block title %}
 <div class="cur_title">
-    Settings: Silly Cat
+    Settings: {{ user.username }}
 </div>
 {% endblock %}
 
 {% block content %}
 <div class="data">
-    <form action="" class="question_form">
+    <form action="" method="POST" class="question_form" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        {% if form.non_field_errors %}
+            <div style="color: red; margin-bottom: 15px;">{{ form.non_field_errors }}</div>
+        {% endif %}
+
         <div class="form">
             <div class="fields">
                 <div class="field_block">
-                    <div class="field_name">
-                        Login
-                    </div>
+                    <div class="field_name">Login</div>
                     <div class="block_input">
-                        <input type="text" class="single-line_input field_input">
+                        {{ form.username }}
+                        {% if form.username.errors %}<div style="color: red;">{{ form.username.errors.0 }}</div>{% endif %}
                     </div>
                 </div>
+
                 <div class="field_block">
-                    <div class="field_name">
-                        Email
-                    </div>
+                    <div class="field_name">Email</div>
                     <div class="block_input">
-                        <input type="email" class="single-line_input field_input">
+                        {{ form.email }}
+                        {% if form.email.errors %}<div style="color: red;">{{ form.email.errors.0 }}</div>{% endif %}
                     </div>
                 </div>
+
                 <div class="field_block">
-                    <div class="field_name">
-                        NickName
-                    </div>
+                    <div class="field_name">NickName</div>
                     <div class="block_input">
-                        <input type="text" class="single-line_input field_input">
+                        {{ form.first_name }}
+                        {% if form.first_name.errors %}<div style="color: red;">{{ form.first_name.errors.0 }}</div>{% endif %}
                     </div>
                 </div>
+
                 <div class="field_block field_text_block">
-                    <div class="field_name">
-                        Upload Avatar
-                    </div>
+                    <div class="field_name">Upload Avatar</div>
                     <div class="block_input avatar-upload">
-                        <div class="avatar-preview"></div>
+                        
+                        <div class="avatar-preview">
+                            {% if user.profile.avatar %}
+                                <img src="{{ user.profile.avatar_url }}" alt="Avatar Preview">
+                            {% endif %}
+                        </div>
+
                         <div class="upload-controls">
                             <input id="avatarInput" name="avatar" type="file" accept="image/*" style="display:none">
+                            
                             <div class="button_upload">
                                 <button type="button" id="chooseBtn" class="btn_upload">Choose file</button>
                             </div>
@@ -57,10 +68,10 @@
                         </div>
                     </div>
                 </div>
-                {% csrf_token %}
             </div>
+            
             <div class="submit">
-                <input type="submit" value="Save" class="submit_btn" disabled>
+                <input type="submit" value="Save" class="submit_btn">
             </div>
         </div>
     </form>

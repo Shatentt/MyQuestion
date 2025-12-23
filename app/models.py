@@ -6,27 +6,50 @@ from django.urls import reverse
 from django.db import models
 from django.db.models import Count, Prefetch
 from django.apps import apps
+from django.templatetags.static import static
 
-# Create your models here.
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.PROTECT)
-    avatar = models.ImageField(default='static/images/silly cat.jpg', upload_to=['profile_pics'])
+    avatar = models.ImageField(upload_to='profile_pics/', blank=True, null=True)
 
     def __str__(self):
         return self.user.username
+    
+    @property
+    def avatar_url(self):
+        if self.avatar:
+            try:
+                if self.avatar.storage.exists(self.avatar.name):
+                    return self.avatar.url
+            except Exception:
+                pass
+        
+        return static('images/silly_cat.jpg')
+    
+class TagManager(models.Manager):
+    def get_by_id(self, pk):
+        try:
+            return self.get(pk=pk)
+        except self.model.DoesNotExist:
+            return None
+
+    def get_by_name(self, name):
+        return self.filter(name=name).first()
 
 class Tag(models.Model):
     name = models.CharField(max_length=255, unique=True)
+
+    objects = TagManager()
 
     def __str__(self):
         return self.name
 
 class QuestionQuerySet(models.QuerySet):
     def new(self):
-        return self.order_by('-created_at')
+        return self.prefetch_related('tags', 'user__profile').order_by('-created_at')
 
     def popular(self):
-        return self.annotate(like_count=Count('likes')).order_by('-like_count', '-created_at')
+        return self.annotate(like_count=Count('likes')).prefetch_related('tags', 'user__profile').order_by('-like_count', '-created_at')
 
     def tagged(self, tag):
         if isinstance(tag, Tag):

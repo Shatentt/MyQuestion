@@ -14,34 +14,50 @@
 
 {% block content %}
 <div class="data">
-    <form action="" class="question_form">
+    <form action="" method="POST" class="question_form">
+        {% csrf_token %}
+        {% if form.non_field_errors %}
+            <div style="color: red; margin-bottom: 20px;">
+                {{ form.non_field_errors }}
+            </div>
+        {% endif %}
+
         <div class="form">
             <div class="fields">
                 <div class="field_block">
-                    <div class="field_name">
-                        Title
-                    </div>
+                    <div class="field_name">Title</div>
                     <div class="block_input">
-                        <input type="text" class="single-line_input field_input">
+                        <input type="text" name="title" class="single-line_input field_input" value="{{ form.title.value|default:'' }}" required>
+                        
+                        {% if form.title.errors %}
+                            <div style="color: red; font-size: 0.8em;">{{ form.title.errors.0 }}</div>
+                        {% endif %}
                     </div>
                 </div>
+
                 <div class="field_block field_text_block">
-                    <div class="field_name">
-                        Text
-                    </div>
+                    <div class="field_name">Text</div>
                     <div class="block_input">
-                        <textarea type="text" class="multi-line_input field_input"></textarea>
+                        <textarea name="text" class="multi-line_input field_input" required>{{ form.text.value|default:'' }}</textarea>
+                        
+                        {% if form.text.errors %}
+                            <div style="color: red; font-size: 0.8em;">{{ form.text.errors.0 }}</div>
+                        {% endif %}
                     </div>
                 </div>
+
                 <div class="field_block">
-                    <div class="field_name">
-                        Tags
-                    </div>
+                    <div class="field_name">Tags</div>
                     <div class="block_input">
-                        <input type="text" class="single-line_input field_input">
+                        <input type="text" name="tags" class="single-line_input field_input" value="{{ form.tags.value|default:'' }}" placeholder="tag1 tag2 tag3">
+                        
+                        {% if form.tags.errors %}
+                            <div style="color: red; font-size: 0.8em;">{{ form.tags.errors.0 }}</div>
+                        {% endif %}
                     </div>
                 </div>
             </div>
+            
             <div class="submit">
                 <input type="submit" value="Ask!" class="submit_btn">
             </div>

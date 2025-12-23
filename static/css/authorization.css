@@ -31,3 +31,8 @@
 .submit-login{
     width: 100px;
 }
+
+.input_error{
+    color: red;
+    font-size: 14px
+}

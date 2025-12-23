@@ -90,3 +90,37 @@
     display: flex;
     justify-content: flex-start;
 }
+
+.question_data {
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    padding-bottom: 50px; 
+}
+
+.error-msg {
+    color: #ff6b6b;
+    margin-top: 5px;
+    font-size: 16px;
+}
+
+.auth-required-msg {
+    font-size: 20px;
+    padding: 20px;
+    background-color: #353535;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.auth-required-msg a {
+    color: #1f6feb;
+    text-decoration: underline;
+}
+
+.no-answers {
+    font-size: 20px;
+    color: #888;
+    text-align: center;
+    margin: 20px 0;
+}

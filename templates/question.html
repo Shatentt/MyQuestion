@@ -22,23 +22,37 @@
         {% for answer in answers %}
             {% include "layout/one_answer.html" with ans=answer %}
         {% empty %}
-            <div class="no-answers">Нет ответов.</div>
+            <div class="no-answers">No answers!</div>
         {% endfor %}
     </div>
     {% include "layout/paginator.html" %}
     <div class="your_answer_title">
         Your answer:
     </div>
+
     <div class="answer_form">
-        <form action="" method="post" class="answer">
-            {% csrf_token %}
-            <div class="block_input">
-                <textarea type="text" name="answer_text" class="answer_input"></textarea>
+        {% if user.is_authenticated %}
+            <form action="" method="post" class="answer">
+                {% csrf_token %}
+                
+                <div class="block_input">
+                    {{ form.text }}
+                    {% if form.text.errors %}
+                        <div class="error-msg">
+                            {{ form.text.errors.0 }}
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <div class="submit">
+                    <input type="submit" value="Answer!" class="submit_answer">
+                </div>
+            </form>
+        {% else %}
+            <div class="auth-required-msg">
+                <a href="{% url 'login' %}?next={{ request.path }}">Log in</a> to post an answer.
             </div>
-            <div class="submit">
-                <input type="submit" value="Answer!" class="submit_answer">
-            </div>
-        </form>
+        {% endif %}
     </div>
 </div>
 
