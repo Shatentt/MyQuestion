@@ -168,6 +168,8 @@ def settings(request):
         if form.is_valid():
             form.save()
             return redirect('settings')
+        else:
+            request.user.refresh_from_db()
     else:
         form = SettingsForm(instance=request.user)
     
