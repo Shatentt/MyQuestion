@@ -8,7 +8,8 @@ from django.views.decorators.http import require_POST
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from app.forms import AnswerForm, LoginForm, QuestionForm, RegisterForm, SettingsForm
-from app.models import Question, Like, Tag
+from app.models import Answer, Question, Like, Tag
+from django.db.models import Sum
 
 def paginate(request, objects, per_page=5):
     page_num = int(request.GET.get('page', 1))
@@ -151,8 +152,6 @@ def question(request, pk):
     answers = getattr(q, 'answers_ordered', [])
     answers_cnt = getattr(q, 'answers_cnt', len(answers))
     page = paginate(request, answers)
-
-    print(answers_cnt)
     
     return render(request, 'question.html', context={
         'answers_cnt': answers_cnt,
@@ -174,41 +173,61 @@ def settings(request):
     
     return render(request, 'settings.html', {'form': form})
 
-# @login_required
-# @require_POST
-# def like_toggle(request):
-#     user = request.user
-#     data = request.POST
+@require_POST
+@login_required(login_url='login')
+def vote(request):
+    data_id = request.POST.get('data_id')
+    vote_type = request.POST.get('vote_type')
+    obj_type = request.POST.get('obj_type', 'question')
 
-#     content_type_id = data.get('content_type_id')
-#     if content_type_id:
-#         try:
-#             ct = ContentType.objects.get_for_id(int(content_type_id))
-#         except Exception:
-#             return JsonResponse({'error': 'invalid content_type_id'}, status=400)
-#     else:
-#         ct_name = data.get('content_type')
-#         if not ct_name:
-#             return JsonResponse({'error': 'content_type is required'}, status=400)
-#         try:
-#             app_label, model = ct_name.split('.')
-#             ct = ContentType.objects.get(app_label=app_label, model=model.lower())
-#         except Exception:
-#             return JsonResponse({'error': 'invalid content_type'}, status=400)
+    if obj_type == 'question':
+        model = Question
+        obj = get_object_or_404(Question, pk=data_id)
+    elif obj_type == 'answer':
+        model = Answer
+        obj = get_object_or_404(Answer, pk=data_id)
+    else:
+        return JsonResponse({'error': 'Wrong object type'}, status=400)
 
-#     try:
-#         object_id = int(data.get('object_id'))
-#     except (TypeError, ValueError):
-#         return JsonResponse({'error': 'invalid object_id'}, status=400)
+    content_type = ContentType.objects.get_for_model(obj)
+    user = request.user.profile
 
-#     like_qs = Like.objects.filter(user=user, content_type=ct, object_id=object_id)
-#     if like_qs.exists():
-#         like_qs.delete()
-#         liked = False
-#     else:
-#         Like.objects.create(user=user, content_type=ct, object_id=object_id)
-#         liked = True
+    val = 1 if vote_type == 'like' else -1
 
-#     count = Like.objects.filter(content_type=ct, object_id=object_id).count()
+    try:
+        like_obj, created = Like.objects.update_or_create(
+            user=user,
+            content_type=content_type,
+            object_id=obj.id,
+            defaults={'vote': val}
+        )
+        
+        new_rating = obj.likes.aggregate(Sum('vote'))['vote__sum'] or 0
 
-#     return JsonResponse({'liked': liked, 'count': count})
+        return JsonResponse({
+            'new_rating': new_rating,
+            'user_vote': val
+        })
+
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=400)
+
+@login_required
+@require_POST
+def mark_correct(request):
+    answer_id = request.POST.get('answer_id')
+    answer = get_object_or_404(Answer, pk=answer_id)
+    question = answer.question
+
+    if request.user != question.user:
+        return JsonResponse({'status': 'error', 'message': 'Access denied'}, status=403)
+
+    if answer.is_correct:
+        answer.is_correct = False
+        answer.save()
+        return JsonResponse({'status': 'ok', 'is_correct': False})
+    else:
+        question.answer_set.update(is_correct=False)
+        answer.is_correct = True
+        answer.save()
+        return JsonResponse({'status': 'ok', 'is_correct': True})

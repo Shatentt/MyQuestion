@@ -1,26 +1,65 @@
 {% load static %}
-
+{% load vote_tags %}
 
 <div class="question-answer">
     <div class="question-answer__avatar_likes">
-        <img class='user_avatar' src="{{ ans.user.avatar_url }}" alt="Avatar">
+        <img class="question_avatar" src="{{ ans.user.avatar_url }}" alt="Avatar">
+        
         <div class="question-answer__likes">
-            <div class="like_count">5</div>
+            <div class="like_count">
+                {{ ans.like_count }}
+            </div>
+            
             <div class="rate">
-                <button class="rate_btn">+</button>
-                <button class="rate_btn">-</button>
+                {% get_user_vote ans user as user_vote %}
+                
+                <button class="rate_btn js-vote" 
+                        data-id="{{ ans.id }}" 
+                        data-type="like" 
+                        data-obj="answer"
+                        {% if user_vote == 1 %}disabled{% endif %}>
+                    +
+                </button>
+                
+                <button class="rate_btn js-vote" 
+                        data-id="{{ ans.id }}" 
+                        data-type="dislike" 
+                        data-obj="answer"
+                        {% if user_vote == -1 %}disabled{% endif %}>
+                    -
+                </button>
             </div>
         </div>
     </div>
+
     <div class="question-answer__content">
-        <div class="question-answer__text">{{ ans.text }}</div>
+        <div class="question-answer__text">
+            {{ ans.text }}
+        </div>
+        
         <div class="correct_answer">
-            <div class="correct_form">
-                <input type="checkbox" id="answer1" class="is_correct">
-            </div>
-            <label for="answer1" class="correct_title">
-                Correct!
-            </label>
+            {% if request.user == question.user %}
+                <div class="correct_form">
+                    <input type="checkbox" 
+                           id="correct-{{ ans.id }}" 
+                           class="is_correct js-correct" 
+                           data-aid="{{ ans.id }}"
+                           {% if ans.is_correct %}checked{% endif %}>
+                </div>
+                <label for="correct-{{ ans.id }}" class="correct_title">
+                    Correct!
+                </label>
+
+            {% else %}
+                {% if ans.is_correct %}
+                    <div class="correct_form">
+                        <input type="checkbox" class="is_correct" checked disabled>
+                    </div>
+                    <span class="correct_title" class="correct_answer">
+                        Correct Answer
+                    </span>
+                {% endif %}
+            {% endif %}
         </div>
     </div>
 </div>

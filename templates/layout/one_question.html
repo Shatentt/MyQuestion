@@ -1,29 +1,51 @@
+{% load vote_tags %}
 {% load static %}
-
 
 <div class="question-answer">
     <div class="question-answer__avatar_likes">
-        <img class='user_avatar' src="{{ q.user.profile.avatar_url }}" alt="Avatar">
+        <img class="question_avatar" src="{{ q.user.profile.avatar_url }}" alt="Avatar">
+        
         <div class="question-answer__likes">
-            <div class="like_count">5</div>
+            <div class="like_count" id="rating-{{ q.id }}">
+                {{ q.like_count }}
+            </div>
+            
             <div class="rate">
-                <button class="rate_btn">+</button>
-                <button class="rate_btn">-</button>
+                {% get_user_vote q user as user_vote %}
+                
+                <button class="rate_btn js-vote" 
+                        data-id="{{ q.id }}" 
+                        data-type="like" 
+                        data-obj="question"
+                        {% if user_vote == 1 or not user.is_authenticated %}disabled{% endif %}>
+                    +
+                </button>
+                
+                <button class="rate_btn js-vote" 
+                        data-id="{{ q.id }}" 
+                        data-type="dislike" 
+                        data-obj="question"
+                        {% if user_vote == -1 or not user.is_authenticated %}disabled{% endif %}>
+                    -
+                </button>
             </div>
         </div>
     </div>
+    
     <div class="question-answer__content">
         <div class="question-answer__theme_text">
             <a href="{% url 'question' q.id %}" class="question-answer__theme">{{ q.title }}</a>
             <p class="question-answer__text">{{ q.text }}</p>
         </div>
+        
         <div class="question__links">
             <div class="question__answers">
-                <a href="{% url 'question' q.id %}" class="white-gray_link">Answers({{ answers_cnt }})</a>
+                <a href="{% url 'question' q.id %}" class="white-gray_link">Answers({{ q.answer_count }})</a>
             </div>
+            
             <div class="question__tags">
                 <div class="question__tags_title">Tags:</div>
-                <div>
+                <div style="display: flex; gap: 5px; flex-wrap: wrap;">
                     {% for tag in q.tags.all %}
                         <a href="{% url 'tag' tag.id %}" class="white-gray_link">
                             {{ tag.name }}

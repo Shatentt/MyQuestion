@@ -32,6 +32,8 @@ urlpatterns = [
     path('register', views.register, name='register'),
     path('login', views.login, name='login'),
     path('logout', views.logout, name='logout'),
+    path('vote/', views.vote, name='vote'),
+    path('correct/', views.mark_correct, name='mark_correct'),
 ]
 
 if settings.DEBUG:

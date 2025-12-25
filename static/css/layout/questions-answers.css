@@ -115,3 +115,18 @@
     color: #666;
     font-size: 0.9em;
 }
+
+.rate_btn[disabled] {
+    opacity: 0.3;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.rate_btn[disabled]:hover {
+    background-color: transparent;
+}
+
+.correct_ans{
+    color: #2da44e;
+    cursor: default;
+}

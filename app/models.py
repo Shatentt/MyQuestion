@@ -7,6 +7,8 @@ from django.db import models
 from django.db.models import Count, Prefetch
 from django.apps import apps
 from django.templatetags.static import static
+from django.db.models import Sum, Count
+from django.db.models.functions import Coalesce
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.PROTECT)
@@ -46,10 +48,10 @@ class Tag(models.Model):
 
 class QuestionQuerySet(models.QuerySet):
     def new(self):
-        return self.prefetch_related('tags', 'user__profile').order_by('-created_at')
+        return self.with_answers_count().order_by('-created_at')
 
     def popular(self):
-        return self.annotate(like_count=Count('likes')).prefetch_related('tags', 'user__profile').order_by('-like_count', '-created_at')
+        return self.annotate(rating=Coalesce(Sum('likes__vote'), 0)).annotate(answers_cnt=Count('answer')).order_by('-rating', '-created_at')
 
     def tagged(self, tag):
         if isinstance(tag, Tag):
@@ -61,7 +63,13 @@ class QuestionQuerySet(models.QuerySet):
     def with_answers(self):
         Answer = apps.get_model('app', 'Answer')
         return self.prefetch_related(
-            Prefetch('answer_set', queryset=Answer.objects.order_by('created_at'), to_attr='answers_ordered')
+            Prefetch(
+                'answer_set', 
+                queryset=Answer.objects.annotate(
+                    rating=Coalesce(Sum('likes__vote'), 0)
+                ).select_related('user').order_by('-rating', '-created_at'),
+                to_attr='answers_ordered' # <--- Вот атрибут, который ищет ваша вьюха
+            )
         )
     
     def with_answers_count(self):
@@ -107,11 +115,19 @@ class Question(models.Model):
     def __str__(self):
         return self.title
     
+    @property
     def like_count(self):
-        return getattr(self, 'like_count', self.likes.count())
+        if hasattr(self, 'rating'):
+            return self.rating
+        
+        res = self.likes.aggregate(Sum('vote'))
+        return res['vote__sum'] or 0
 
+    @property
     def answer_count(self):
-        return getattr(self, 'answer_count', self.answer_set.count())
+        if hasattr(self, 'answers_cnt'):
+            return self.answers_cnt
+        return self.answer_set.count()
 
     def full_url(self, request):
         return request.build_absolute_uri(self.get_absolute_url())
@@ -130,6 +146,12 @@ class Answer(models.Model):
 
     likes = GenericRelation('app.Like', related_query_name='answer')
 
+    @property
+    def like_count(self):
+        if hasattr(self, 'rating'):
+            return self.rating
+        return self.likes.aggregate(Sum('vote'))['vote__sum'] or 0
+
     def __str__(self):
         return self.text[:50]
 
@@ -138,6 +160,15 @@ class Like(models.Model):
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
+
+    LIKE = 1
+    DISLIKE = -1
+    VOTE_CHOICES = (
+        (LIKE, 'Like'),
+        (DISLIKE, 'Dislike')
+    )
+
+    vote = models.SmallIntegerField(choices=VOTE_CHOICES, verbose_name="Vote")
 
     created_at = models.DateTimeField(auto_now_add=True)
 

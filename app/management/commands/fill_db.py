@@ -1,5 +1,6 @@
 import random
 import string
+
 from django.core.management.base import BaseCommand
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
@@ -31,7 +32,6 @@ class Command(BaseCommand):
         self.stdout.write('Начинаем генерацию данных...')
 
         default_password = make_password('password') 
-        
         last_id = User.objects.last().id if User.objects.exists() else 0
         
         users_list = [
@@ -46,7 +46,6 @@ class Command(BaseCommand):
         User.objects.bulk_create(users_list, ignore_conflicts=True)
         
         users = list(User.objects.filter(username__startswith='testuser_').order_by('-id')[:num_users])
-
         self.stdout.write(f'Создано пользователей: {len(users)}')
 
         existing_profile_user_ids = set(Profile.objects.values_list('user_id', flat=True))
@@ -107,6 +106,7 @@ class Command(BaseCommand):
         answers = list(Answer.objects.all().order_by('-created_at')[:num_answers])
         self.stdout.write(f'Создано ответов: {len(answers)}')
         
+        # 7. LIKES (с учетом поля vote)
         all_targets = questions + answers
         ct_question = ContentType.objects.get_for_model(Question)
         ct_answer = ContentType.objects.get_for_model(Answer)
@@ -133,8 +133,16 @@ class Command(BaseCommand):
                 continue
             
             unique_likes.add(pair)
+            
+            vote_val = random.choice([1, 1, 1, -1]) 
+            
             likes_to_create.append(
-                Like(user=prof, content_type_id=ct_id, object_id=target.id)
+                Like(
+                    user=prof, 
+                    content_type_id=ct_id, 
+                    object_id=target.id,
+                    vote=vote_val
+                )
             )
 
         Like.objects.bulk_create(likes_to_create, ignore_conflicts=True)
