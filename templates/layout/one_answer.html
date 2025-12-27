@@ -17,7 +17,7 @@
                         data-id="{{ ans.id }}" 
                         data-type="like" 
                         data-obj="answer"
-                        {% if user_vote == 1 %}disabled{% endif %}>
+                        {% if user_vote == 1 or not user.is_authenticated %}disabled{% endif %}>
                     +
                 </button>
                 
@@ -25,7 +25,7 @@
                         data-id="{{ ans.id }}" 
                         data-type="dislike" 
                         data-obj="answer"
-                        {% if user_vote == -1 %}disabled{% endif %}>
+                        {% if user_vote == -1 or not user.is_authenticated %}disabled{% endif %}>
                     -
                 </button>
             </div>
